@@ -14,7 +14,7 @@ I'm tired of messing with this in C++/C# so I ported it to frida (Python/Javascr
 
 # Configuration
 
-All extensions under `js/extensions` has a disabled flag to easiely configure which extensions to use. Extensions also come with a maturity rating. Disable experimental extensions if there is problems with them (like client crashing with access violation).
+All extensions under `js/extensions` have a `disabled` flag to quickly configure which extensions to load. Extensions come with an maturity rating. Disable experimental extensions if there are problems with them (like client crashing with access violation).
 
 # Lua
 
