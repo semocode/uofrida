@@ -19,3 +19,13 @@ All extensions under `js/extensions` has a disabled flag to easiely configure wh
 # Lua
 
 There is a compiled LuaPlus dll in lib/. It's supposed to be very close to the LuaPlus version in UOSA. Feel free to compile it by yourself from sources but for sake of ease I just included my archived version.
+
+# Extensions
+
+## AddUOKeyboardFunctions
+
+Adds new functions for calling from lua: `MoveMouseAbs`, `MouseLClick`, `MouseRClick`, `DICtrlShift`, `DIKey1`, etc.
+
+## LuaNewState
+
+Required for `AddUOKeyboardFunctions`. Keeps track of the lua state within the client and exposes it to our own functions. 
