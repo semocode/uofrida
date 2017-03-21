@@ -27,6 +27,16 @@ function buildPatternPushAbs(address) {
     return p;
 }
 
+function buildPatternMovEaxAbs(address) {
+    var p = "b8 "; // push
+    p += hexShift(address, 0) + " ";
+    p += hexShift(address, 8) + " ";
+    p += hexShift(address, 16) + " ";
+    p += hexShift(address, 24);
+    //console.log(p);
+    return p;
+}
+
 function buildPatternAddr(address) {
     var p = "";
     p += hexShift(address, 0) + " ";

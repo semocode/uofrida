@@ -51,7 +51,7 @@ var RTTI = {
 		Memory.protect(off, 4, 'rwx');
 		Memory.writePointer(off, hook.mem);
 
-		console.log('[  ] Intercepted vtable entry', entry, 'of', name, 'at', off);
+		console.log('[  ]  Intercepted vtable entry', entry, 'of', name, 'at', off);
 		
 	}
 }

@@ -10,7 +10,7 @@ RE.Debugger.addExtension({
     onAnalyze: function () {        
         var n1 = Memory.scanSync(ptr(rdata.base), uint64("" + rdata.size), buildScanPattern("lua_State"));
         var na1 = n1[0].address
-        console.log("[  ] Found string \"lua_State\" @ " + na1.toString(16));
+        console.log("[  ]  Found string \"lua_State\" @ " + na1.toString(16));
         
         var n2 = Memory.scanSync(ptr(text.base), uint64("" + text.size), "68 " + na1.toMatchPattern());
         var na2 = n2[1].address;

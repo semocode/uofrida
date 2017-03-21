@@ -5,9 +5,10 @@ var i = 0;
 
 RE.Debugger.addExtension({
     
-    name: 'AddUOKeyboardFunctions',
-    description: 'Adds keyboard and mouse functions (MoveMouseAbs, ' +
-        'MouseLClick, DICtrlShift, DIKey*, etc.) to the available lua functions',
+    name: 'AddLuaFunctions',
+    description: 'Adds various lua functions (MoveMouseAbs, ' +
+        'MouseLClick, DICtrlShift, DIKey*, etc. for mouse and keyboard control, ' +
+        'package_open, io_open to load lua standard libraries normally not available)',
     disable: false,
     status: 'stable',
     
@@ -27,12 +28,21 @@ RE.Debugger.addExtension({
     },
         
     luaLoad: function (name, fn) {
-        console.log('[++] Adding lua function \"' + name + '\"');
+        console.log('[++]  Adding lua function \"' + name + '\"');
         this.luaLoadArgs(name, fn, []);
     },
     
+    luaLoadAddr: function (name, addr) {
+        console.log('[++]  Adding lua function \"' + name + '\"');
+        names[name] = Memory.allocAnsiString(name);
+        i += Assembly.writePushImm32(this.mem.add(i), names[name]);
+        i += Assembly.writePushImm32(this.mem.add(i), addr);
+        i += Assembly.writePushEsi(this.mem.add(i));
+        i += Assembly.writeCall(this.mem.add(i), this.addr);
+    },
+    
     luaLoadThreaded: function (name, fn) {
-        console.log('[++] Adding threaded lua function \"' + name + '\"');
+        console.log('[++]  Adding threaded lua function \"' + name + '\"');
         names[name] = Memory.allocAnsiString(name);
         cbs['threaded-' + name] = new NativeCallback(fn, 'void', []);
         cbs[name] = new NativeCallback(function () {
@@ -49,7 +59,7 @@ RE.Debugger.addExtension({
         var s1 = Memory.scanSync(ptr(rdata.base), uint64("" + rdata.size), buildScanPattern("GetBuildVersion"));
         var sa = s1[0].address
         this.getBuildVersionString = sa;
-        console.log("[  ] Found string \"GetBuildVersion\" @ " + this.getBuildVersionString.toString(16));
+        console.log("[  ]  Found string \"GetBuildVersion\" @ " + this.getBuildVersionString.toString(16));
         
         // Search xref to string in .text
         var s2 = Memory.scanSync(ptr(text.base), uint64("" + text.size), buildPatternPushAbs(sa));
@@ -71,9 +81,39 @@ RE.Debugger.addExtension({
         var callOffset = callAddr.sub(0x400000);
         var tar = Memory.readS32(ptr(callAddr.add(1).toString()));
         var sa3 = callAddr.add(5).add(tar);
-        console.log("[  ] Found RegisterLuaFunction @ " + sa3.toString(16));
+        console.log("[  ]  Found RegisterLuaFunction @ " + sa3.toString(16));
         
         this.addr = sa3;
+        
+        
+        // 2. Find package lib open function
+        var s1 = Memory.scanSync(ptr(rdata.base), uint64("" + rdata.size), buildScanPattern("_LOADLIB"));
+        var sa = s1[0].address
+        console.log("[  ]  Found string \"LOADLIB\" @ " + sa.toString(16));
+        // Search xref to string in .text
+        var s2 = Memory.scanSync(ptr(text.base), uint64("" + text.size), buildPatternMovEaxAbs(sa));
+        this.load_package_lib = s2[1].address.sub(0xf);
+        console.log("[  ]  Found luaopen_package @ " + this.load_package_lib.toString(16));
+        
+        // 3. find io lib open function
+        var s1 = Memory.scanSync(ptr(rdata.base), uint64("" + rdata.size), buildScanPattern("no calling environment"));
+        var sa = s1[0].address
+        console.log("[  ]  Found string \"no calling environment\" @ " + sa.toString(16));
+        // Search xref to string in .text
+        var s2 = Memory.scanSync(ptr(text.base), uint64("" + text.size), buildPatternPushAbs(sa));
+        this.load_io_lib = s2[1].address.sub(0x4e);
+        console.log("[  ]  Found luaopen_io @ " + this.load_io_lib.toString(16));
+        
+        // 4. find os lib
+        var s1 = Memory.scanSync(ptr(rdata.base), uint64("" + rdata.size), '00 ' + buildScanPattern("os") + ' 00');
+        var sa = s1[0].address.add(1)
+        console.log("[  ]  Found string \"os\" @ " + sa.toString(16));
+        
+        // Search xref to string in .text
+        var s2 = Memory.scanSync(ptr(text.base), uint64("" + text.size), buildPatternPushAbs(sa));
+        this.load_os_lib = s2[1].address.sub(9);
+        console.log("[  ]  Found luaopen_os @ " + this.load_os_lib.toString(16));
+        
     },
     
     onHooking: function () {
@@ -81,15 +121,27 @@ RE.Debugger.addExtension({
         // prepare our inserted code
         mem = Memory.alloc(1024);
         this.mem = mem;
-        console.log('[++] Allocated memory for injector at', mem.toString(16));
+        console.log('[++]  Allocated memory for AddLuaFunctions injector at', mem.toString(16));
         
-        // Re-register overwritten UOGetBuildVersion
+        // write actual hook into UO control flow
+        var hook = this.hookAddr;
+        console.log('[++]  Writing hooking code @', hook.toString(16));
         i = 0;
-        i += Assembly.writePushImm32(mem.add(i), this.getBuildVersionString);
-        i += Assembly.writePushImm32(mem.add(i), this.getBuildVersionImpl);
-        i += Assembly.writePushEsi(mem.add(i));
-        i += Assembly.writeCall(mem.add(i), this.addr);
+        i += Assembly.writeCall(hook.add(i), mem);
+        i += Assembly.writeNops(hook.add(i), 5 + 1 + 5);  
         
+        // Create new lua functions in injector memory on-the-fly
+        i = 0;
+
+        // Re-register overwritten UOGetBuildVersion
+        this.luaLoadAddr("GetBuildVersion", this.getBuildVersionImpl);
+        
+        // Those open io and package lib but must be called from inside a calling environment
+        this.luaLoadAddr("load_package_lib", this.load_package_lib);
+        this.luaLoadAddr("load_io_lib", this.load_io_lib);
+        this.luaLoadAddr("load_os_lib", this.load_os_lib);
+        
+        // Load a couple of mouse and keyboard functions
         this.luaLoad("MoveMouseAbs", function () {
             if (lua_state) {
                 var x = parseInt(win32.lua_tonumber(lua_state, 1));
@@ -195,12 +247,5 @@ RE.Debugger.addExtension({
         
         // ret
         i += Assembly.writeRet(mem.add(i));
-        
-        // write actual hook into UO control flow
-        var hook = this.hookAddr;
-        console.log('[++] Writing hooking code @', hook.toString(16));
-        i = 0;
-        i += Assembly.writeCall(hook.add(i), mem);
-        i += Assembly.writeNops(hook.add(i), 5 + 1 + 5);  
     }
 });

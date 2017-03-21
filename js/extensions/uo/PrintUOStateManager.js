@@ -7,11 +7,6 @@ RE.Debugger.addExtension({
     disable: false,
     status: 'testing',
     
-    onAnalyze: function () {
-        var addr = RTTI.findVTable("LoginState");
-        console.log(addr, addr.toString(16));
-        
-    },
     
     onHooking: function () {
     	//this.interceptState("ClientStartUpState");

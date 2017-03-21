@@ -8,7 +8,8 @@ from config.config import uo_frida_dir;
 script_content = ''
 
 def on_message(message, data):
-    print("[%s] => %s" % (message, data))
+    msg = "=> %s\n=> data: %s" % (message, data);
+    print(msg.replace('\\n', '\n'));
 
 def add_script(session, script):
     global script_content    

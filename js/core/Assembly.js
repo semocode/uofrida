@@ -9,6 +9,16 @@ var Assembly = {
         return 1;
 	},
 	
+    writePushEsi: function (addr) {
+        Memory.writeU8(addr, 0x56);
+        return 1;
+    },
+    
+    writePopEcx: function (addr) {
+    	Memory.writeU8(addr, 0x59);
+        return 1;
+    },
+	
 	writePopAll: function (addr) {
 		Memory.writeU8(addr, 0x61);
         return 1;
@@ -65,10 +75,5 @@ var Assembly = {
             Types.byteFromInt(imm32, 3)
         ]);
         return 5;
-    },
-    
-    writePushEsi: function (addr) {
-        Memory.writeU8(addr, 0x56);
-        return 1;
     }
 };

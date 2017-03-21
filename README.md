@@ -24,7 +24,16 @@ There is a compiled LuaPlus dll in lib/. It's supposed to be very close to the L
 
 ## AddUOKeyboardFunctions
 
-Adds new functions for calling from lua: `MoveMouseAbs`, `MouseLClick`, `MouseRClick`, `DICtrlShift`, `DIKey1`, etc.
+Adds new functions for calling from lua: 
+
+Mouse Control: `MoveMouseAbs(x,y)`, `MouseLClick()`, `MouseRClick()`
+Move the mouse to where you need to click. Coordinates are screen coordinates like in win32 `mouse_event`
+
+Keyboard: `DICtrlShift`, `DIKey1`, `DIKey2`, `DIKey3`, `DIKey4`
+Simulates a certain keypress event. `DICtrlShift` to pop object handles in client ;)
+
+Load lua libraries: `load_io_lib`, `load_os_lib`, `load_package_lib`
+Loads standard lua libraries which normally dont get loaded. See https://www.lua.org/manual/5.1/manual.html#5 for more details.
 
 ## LuaNewState
 
