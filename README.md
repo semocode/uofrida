@@ -22,7 +22,7 @@ There is a compiled LuaPlus dll in lib/. It's supposed to be very close to the L
 
 # Extensions
 
-## AddUOKeyboardFunctions
+## AddLuaFunctions
 
 Adds new functions for calling from lua: 
 
@@ -33,8 +33,8 @@ Keyboard: `DICtrlShift`, `DIKey1`, `DIKey2`, `DIKey3`, `DIKey4`
 Simulates a certain keypress event. `DICtrlShift` to pop object handles in client ;)
 
 Load lua libraries: `load_io_lib`, `load_os_lib`, `load_package_lib`
-Loads standard lua libraries which normally dont get loaded. See https://www.lua.org/manual/5.1/manual.html#5 for more details.
+Loads standard lua libraries which are present in the client but dont get loaded. See https://www.lua.org/manual/5.1/manual.html#5 for more details.
 
 ## LuaNewState
 
-Required for `AddUOKeyboardFunctions`. Keeps track of the lua state within the client and exposes it to our own functions. 
+Required for `AddLuaFunctions`. Keeps track of the lua state within the client and exposes it to our own functions. 

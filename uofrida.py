@@ -41,6 +41,9 @@ def main():
     add_script_dir(session, 'js\\extensions')
     add_script(session, uo_frida_dir + '\\js\\main.js')
     
+    if not os.path.exists(uo_frida_dir + "\\tmp"):
+        os.makedirs(uo_frida_dir + "\\tmp")
+        
     text_file = open(uo_frida_dir + "\\tmp\\script.js", "w")
     text_file.write(script_content)
     text_file.close()
@@ -58,7 +61,7 @@ def main():
     print("[  ] Resuming execution")
     frida.resume(pid)
 
-    input('[!!] Press Enter at any time to detach from UOSA\n\n')
+    input('[!!] Press Enter at any time to stop uofrida\n\n')
     session.detach()
     
 if __name__ == '__main__':

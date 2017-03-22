@@ -114,6 +114,7 @@ RE.Debugger.addExtension({
         this.load_os_lib = s2[1].address.sub(9);
         console.log("[  ]  Found luaopen_os @ " + this.load_os_lib.toString(16));
         
+        
     },
     
     onHooking: function () {

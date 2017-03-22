@@ -22,7 +22,7 @@ var modules = Process.enumerateModulesSync()
 var uosa;
 for (var i = 0; i < modules.length; i++) {
     var module = modules[i];
-    //console.log("[+] Module " + module.name + " found")
+    //console.log("[  ] Module " + module.name + " found")
     
     if (module.name == "UOSA.exe") {
         uosa = module;

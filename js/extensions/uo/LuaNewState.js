@@ -25,5 +25,16 @@ RE.Debugger.addExtension({
                 lua_state = this.context.eax.add(0);
             }
         });
+        
+        /*
+        Interceptor.attach(ptr("0x4DA4CB"), {
+            onEnter: function () {
+            	var e = this.context.esi;
+            	var ele = Memory.readAnsiString(ptr("0x" + e.toString(16)));
+                console.log('[UO] generic gump element', ele);
+            }
+        });
+        */
+        
     }
 });
