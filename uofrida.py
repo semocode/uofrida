@@ -2,10 +2,11 @@ import frida;
 import sys;
 import os;
 
-from config.config import uo_dir;
-from config.config import uo_frida_dir;
+import winreg
 
 script_content = ''
+uo_dir = ''
+uo_frida_dir = ''
 
 def on_message(message, data):
     msg = "=> %s\n=> data: %s" % (message, data);
@@ -26,6 +27,17 @@ def add_script_dir(session, directory):
 def main():
     global script_content;
     print("[  ] Spawning UOSA.exe through frida")
+
+    key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\GameUX\\Games\\{30E124D7-B515-4778-91C5-4714CB238907}", access=winreg.KEY_READ | winreg.KEY_WOW64_64KEY)
+    value = winreg.QueryValueEx(key, "ConfigApplicationPath")
+    winreg.CloseKey(key)
+    
+    global uo_dir
+    uo_dir = value[0]
+
+    global uo_frida_dir
+    uo_frida_dir = uo_dir + "\\uofrida"
+    
     os.chdir(uo_dir)
     pid = frida.spawn(["UOSA.exe"])
     session = frida.attach(pid)
