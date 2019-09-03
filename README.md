@@ -14,15 +14,7 @@ Just got tired of messing with this in C++/C# (RIP UOBlackmage) so I ported it t
 1. Clone this repository into the UOSA folder: `cd Ultima\ Online\ Enhanced; git clone https://github.com/nufasou/uofrida.git`
 1. Start uofrida from the command line: `python uofrida\uofrida.py`
 
-# Configuration
-
-All extensions under `js/extensions` have a `disabled` flag to quickly configure which extensions to load. Extensions come with an maturity rating. Disable experimental extensions if there are problems with them (like client crashing with access violation).
-
-# Lua
-
-There is a compiled LuaPlus dll in lib/. It's supposed to be very close to the LuaPlus version in UOSA. Feel free to compile it by yourself from sources but for sake of ease I just included my archived version.
-
-# Extensions
+# Available Extensions
 
 ## AddLuaFunctions
 
@@ -52,3 +44,8 @@ Logs all filenames loaded from UOP archives into uop-names.txt (can be further p
 ## LuaNewState
 
 Required for `AddLuaFunctions`. Keeps track of the lua state within the client and exposes it to our own functions. 
+
+# Extra
+
+1. There is a compiled LuaPlus dll in lib/. It's supposed to be very close to the LuaPlus version in UOSA. Feel free to compile it by yourself from sources but for sake of ease I just included my archived version.
+1. All extensions under `js/extensions` have a `disabled` flag to quickly configure which extensions to load. Extensions come with an maturity rating. Disable experimental extensions if there are problems with them (like client crashing with access violation).
