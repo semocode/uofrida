@@ -3,14 +3,15 @@
 UOSA dynamic instrumentation toolset based on https://www.frida.re/
 
 This tool will spawn a new Ultima Online Enhanced Client and add functionality to the LUA modding API of it. 
-I also use it for prototyping complex checkpoints when coming from IDA or just messing with the client in general. 
-Just got tired of messing with this in C++/C# (My old UOBlackmage tool) so I ported it to frida (Python/Javascript) :)
+I also use it for prototyping complex checkpoints when coming from IDA. 
+
+Just got tired of messing with this in C++/C# (RIP UOBlackmage) so I ported it to Python/Javascript and frida :)
 
 # Installation
 
 1. Install Python from https://www.python.org/
 1. Install frida toolkit through python package manager `pip` with `pip install frida`
-1. Clone this repository (just into the UOSA folder will work): `git clone <this-repo-url>`
+1. Clone this repository into the UOSA folder: `cd Ultima\ Online\ Enhanced; git clone https://github.com/nufasou/uofrida.git`
 1. Start uofrida from the command line: `python uofrida\uofrida.py`
 
 # Configuration
