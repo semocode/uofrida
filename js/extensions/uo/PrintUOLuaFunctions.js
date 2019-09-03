@@ -1,7 +1,7 @@
 RE.Debugger.addExtension({
 	name: 'PrintUOLuaFunctions',
 	description: 'Print all functions registered to the lua_state',
-    disable: true,
+    disable: false,
     status: 'stable',
     addr: null,
     
@@ -38,7 +38,7 @@ RE.Debugger.addExtension({
         Interceptor.attach(ptr("0x" + this.addr.toString(16)), {
             onEnter: function (args) {
                 var esp = this.context.esp;
-                var off = esp.add(8);
+                var off = esp.add(12);
                 var addr = Memory.readU32(off);
                 var msg = Memory.readCString(ptr(addr))
                 console.log("[*] UORegisterLuaFunction: " + msg);
