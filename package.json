@@ -6,6 +6,7 @@
   "main": "agent/index.ts",
   "scripts": {
     "uo": "node blackmage.js",
+    "prepare": "npm run build",
     "build": "frida-compile src/blackmage.ts -o build/bundle.js",
     "watch": "frida-compile src/blackmage.ts -o build/bundle.js -w"
   },
