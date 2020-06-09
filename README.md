@@ -20,7 +20,7 @@ Development is mostly done on vscode as it provides pretty good support for type
 
 # Available Extensions
 
-* New function available in the LUA UI: [docs/lua-functions.md](lua functions)
+* New function available in the LUA UI: [lua functions](docs/lua-functions.md)
 * Prints all functions registered available for use by the LUA UI
 * Prints all loaded lua libraries
 
