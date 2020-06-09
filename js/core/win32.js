@@ -18,6 +18,11 @@ var win32 = {
     	// Find the function address by the specified module/name
         win32.addr[module][name] = Module.findExportByName(module, name);
         
+        if (!win32.addr[module][name]) {
+            console.log('[' + module + '] Could not find export: ' + name);
+            return;
+        }
+        
         // Create a new NativeFunction object for access to the win32 API from JS
         win32[name] = new NativeFunction(
             win32.addr[module][name], ret, args
@@ -35,3 +40,5 @@ win32.registerFunction("user32.dll", "MessageBoxA", 'int', ['int', 'pointer', 'p
 win32.registerFunction("user32.dll", "GetCursorPos", 'int', ['pointer']);
 win32.registerFunction("user32.dll", "mouse_event", 'void', ['int', 'int', 'int', 'int', 'int']);
 win32.registerFunction("user32.dll", "SendInput", 'int', ['int', 'pointer', 'int']);
+win32.registerFunction("user32.dll", "GetActiveWindow", 'int', []);
+win32.registerFunction("user32.dll", "ShowWindow", 'int', ['int', 'int']);

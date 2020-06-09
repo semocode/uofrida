@@ -1,7 +1,7 @@
 RE.Debugger.addExtension({
     name: 'LogUOPNames',
     description: 'Log all .lua and .xml files loaded from UOP archives',
-    disable: false,
+    disable: true,
     status: 'stable',
     addr: null,
     

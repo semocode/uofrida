@@ -1,0 +1,22 @@
+{
+  "name": "uo-blackmage",
+  "version": "1.0.0",
+  "description": "Ultima Online Blackmage",
+  "private": true,
+  "main": "agent/index.ts",
+  "scripts": {
+    "uo": "node blackmage.js",
+    "build": "frida-compile src/blackmage.ts -o build/bundle.js",
+    "watch": "frida-compile src/blackmage.ts -o build/bundle.js -w"
+  },
+  "devDependencies": {
+    "@types/frida-gum": "^15.3.0",
+    "@types/node": "^14.0.5",
+    "frida-compile": "^9.3.0",
+    "regedit": "^3.0.3"
+  },
+  "dependencies": {
+    "frida": "^12.9.7",
+    "ps-node": "^0.1.6"
+  }
+}

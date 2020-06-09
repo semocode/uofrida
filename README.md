@@ -12,7 +12,7 @@ Just got tired of messing with this in C++/C# (RIP UOBlackmage) so I ported it t
 1. Install Python from https://www.python.org/
 1. Install frida toolkit through python package manager `pip` with `pip install frida`
 1. Clone this repository into the UOSA folder: `cd Ultima\ Online\ Enhanced; git clone https://github.com/nufasou/uofrida.git`
-1. Start uofrida from the command line: `python uofrida\uofrida.py`
+1. Start uofrida from the command line: `python uofrida\blackmage.py`
 
 # Available Extensions
 

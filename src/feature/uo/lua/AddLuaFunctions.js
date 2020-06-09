@@ -20,7 +20,7 @@ RE.Debugger.addExtension({
     
     luaLoadArgs: function (name, fn, args) {
         names[name] = Memory.allocAnsiString(name);
-        cbs[name] = new NativeCallback(fn, 'void', args);
+        cbs[name] = new NativeCallback(fn, 'int', args);
         i += Assembly.writePushImm32(this.mem.add(i), names[name]);
         i += Assembly.writePushImm32(this.mem.add(i), cbs[name]);
         i += Assembly.writePushEsi(this.mem.add(i));
@@ -181,6 +181,21 @@ RE.Debugger.addExtension({
             UOInput.KeyShiftUp();
             UOInput.KeyCtrlUp();
         });
+        
+        this.luaLoad("HTTPGet", function () {
+            if (lua_state) {
+                var ptr = new NativePointer(win32.lua_tolstring(lua_state, 1, 0));
+                var url = Memory.readCString(ptr)
+                var ret = Memory.allocAnsiString("yoolo")
+                send({"url": url})
+                win32.lua_pushstring(lua_state, ret)
+                return 1
+            }
+        });
+        
+        this.luaLoad("Win32WindowMaximize", function () {
+            win32.ShowWindow(win32.GetActiveWindow(), 3)
+        })
         
         this.luaLoad("MoveWUp", function () {
             UOInput.KeyUpUp();
