@@ -1,3 +1,12 @@
+/**
+ * This nodejs script spawns a new UOSA client through frida and injects 
+ * uo-blackmage (as transpiled from blackmage.ts into bundle/bundle.js)
+ * into it.
+ * 
+ * The installation directory of UOSA is read from the windows registry
+ * so there is no configuration needed.
+ */
+
 const frida = require('frida')
 const regedit = require('regedit')
 const process = require('process')
