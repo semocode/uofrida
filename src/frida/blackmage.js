@@ -3,8 +3,6 @@ const regedit = require('regedit')
 const process = require('process')
 const fs = require('fs')
 const ps = require('ps-node')
- 
-const uosaRegistryKey = 'HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\GameUX\\Games\\{30E124D7-B515-4778-91C5-4714CB238907}'
 
 async function sleep(ms) {
     return new Promise((resolve) => {
@@ -13,8 +11,8 @@ async function sleep(ms) {
 }
 
 async function processExists(pid) {
-    return new Promise(function(resolve, reject) {
-        ps.lookup({ pid: pid }, function(err, resultList ) {
+    return new Promise((resolve, reject) => {
+        ps.lookup({ pid: pid }, (err, resultList ) => {
             if (err) {
                 reject(err)
             }
@@ -29,8 +27,9 @@ async function processExists(pid) {
 }
 
 async function getUODir() {
-    return new Promise(function(resolve, reject) {
-        regedit.list(uosaRegistryKey, async function(err, result) {
+    const uosaRegistryKey = 'HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\GameUX\\Games\\{30E124D7-B515-4778-91C5-4714CB238907}'
+    return new Promise((resolve, reject) => {
+        regedit.list(uosaRegistryKey, async (err, result) => {
             const uosaDir = result[uosaRegistryKey].values.ConfigApplicationPath.value
             resolve(uosaDir)
         })
