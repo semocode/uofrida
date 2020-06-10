@@ -1,17 +1,17 @@
 # uo-blackmage
 
-UOSA dynamic instrumentation toolset based on https://www.frida.re/
+This tool spawns a new Ultima Online Enhanced Client and add various new features to it.
 
-This tool will spawn a new Ultima Online Enhanced Client and add various functionality to it.
-
+It is based on nodejs and frida.re (https://www.frida.re/) and written in Typescript.
 
 ## Installation
 
-1. Install git (or just vscode)
+1. Download or clone this repository
 2. Install nodejs from https://nodejs.org/en/download/
-3. Clone this repository anywhere: `git clone https://github.com/nufasou/uofrida.git`
-4. Install dependencies by running `npm install` (this will also build uo-blackmage)
-5. Start UOSA: `npm run uo`
+3. Double click on the provided blackmage.bat
+
+Running the bat file will install all dependeciens if they are not found and then start Ultima Online with 
+uo-blackmage attached. You can also start UO by running `npm run uo` yourself.
 
 ## Making modifications / Development
 
