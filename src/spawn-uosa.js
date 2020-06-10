@@ -39,7 +39,7 @@ async function main() {
     const uosaDir = await getUODir()
     console.log('Located UOSA in ' + uosaDir)
 
-    const blackmageDir = __dirname + '/../../build/bundle.js'
+    const blackmageDir = __dirname + '/../build/bundle.js'
     console.log('Located uo-blackmage in ' + blackmageDir)
 
     process.chdir(uosaDir)
