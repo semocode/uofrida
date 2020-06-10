@@ -6,6 +6,7 @@
   "main": "src/blackmage.ts",
   "scripts": {
     "uo": "node src/spawn-uosa.js",
+    "debug": "node --inspect src/spawn-uosa.js",
     "prepare": "npm run build",
     "build": "frida-compile src/blackmage.ts -o build/bundle.js",
     "watch": "frida-compile src/blackmage.ts -o build/bundle.js -w"
