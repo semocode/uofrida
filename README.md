@@ -1,17 +1,20 @@
 # uo-blackmage
 
-This tool spawns a new Ultima Online Enhanced Client and add various new features to it.
+**uo-blackmage** is a tool to add new features and fix bugs for the [Ultima Online Enhanced Client](https://uo.com).
 
-It is based on nodejs and frida.re (https://www.frida.re/) and written in Typescript.
+It is based on [nodejs](https://nodejs.org/en/download/) and [frida.re](https://www.frida.re/) 
+and written in [Typescript](https://www.typescriptlang.org/).
 
 ## Installation
 
-1. Download or clone this repository
-2. Install nodejs from https://nodejs.org/en/download/
-3. Double click on the provided blackmage.bat
+1. [Install nodejs](https://nodejs.org/en/download/)
+2. [Download](https://github.com/nufasou/uofrida/archive/master.zip) or clone this repository
+3. Start the provided `blackmage.bat`
 
-Running the bat file will install all dependeciens if they are not found and then start Ultima Online with 
-uo-blackmage attached. You can also start UO by running `npm run uo` yourself.
+Running `blackmage.bat` will install all dependeciens if they are not found and then start Ultima Online with 
+uo-blackmage attached. If dependencies are already installed, it will start UO.
+
+You can also start UO by running `npm run uo` yourself.
 
 ## Making modifications / Development
 
