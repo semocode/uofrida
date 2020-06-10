@@ -4,7 +4,6 @@ import { rdata, text } from "../../../../service/exe";
 const PrintFunctions = {
     onExecute() {
         // Search "GetBuildVersion" string in .rdata
-        console.log('test')
         var s1 = Memory.scanSync(rdata.base, rdata.size, buildScanPattern("GetBuildVersion"));
         var sa = s1[0].address
         //console.log("[  ] Found string \"GetBuildVersion\" @ " + sa.toString(16));

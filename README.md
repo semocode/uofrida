@@ -7,10 +7,11 @@ This tool will spawn a new Ultima Online Enhanced Client and add various functio
 
 ## Installation
 
-1. Clone this repository anywhere: `git clone https://github.com/nufasou/uofrida.git`
+1. Install git (or just vscode)
 2. Install nodejs from https://nodejs.org/en/download/
-3. Install dependencies by running `npm install` (this will also build uo-blackmage)
-4. Start UOSA with uo-blackmage attached: `npm run uo`
+3. Clone this repository anywhere: `git clone https://github.com/nufasou/uofrida.git`
+4. Install dependencies by running `npm install` (this will also build uo-blackmage)
+5. Start UOSA: `npm run uo`
 
 ## Making modifications / Development
 
