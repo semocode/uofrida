@@ -1,5 +1,6 @@
 import { rdata, text } from "../../../../service/exe"
 import { buildScanPattern, buildPatternPushAbs } from "../../../../util";
+import { Feature } from "../../../../Feature";
 
 // Keep references to allocated memory so it does not get free'd (to avoid nasty crashes of UOSA.exe)
 var names: any = {}
@@ -35,7 +36,7 @@ function luaLoadAddr(cw: X86Writer, registerLuaFunction: NativePointer, name: st
     
 }
 
-const AddFunctions = {
+export class AddFunctions extends Feature {
 
     onExecute() {
         const s1 = Memory.scanSync(rdata.base, rdata.size, buildScanPattern("GetBuildVersion"))

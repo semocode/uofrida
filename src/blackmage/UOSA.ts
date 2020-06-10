@@ -1,10 +1,13 @@
+import { Feature } from "./Feature"
+import { Bugfix } from "./Bugfix"
+
 export interface UOSAProperties {
-    features: Array<any>,
-    bugfixes: Array<any>
+    features: Array<Feature>,
+    bugfixes: Array<Bugfix>
 }
 
 export class UOSA {
-    features: Array<any>
+    features: Array<Feature>
 
     constructor(config: UOSAProperties) {
         this.features = config.features

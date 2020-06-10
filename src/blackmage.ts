@@ -6,18 +6,14 @@
  * (usually through `npm run uo`)
  */
 
-import PrintFunctions from "./blackmage/feature/uo/lua/print-functions";
-import PrintLibraries from "./blackmage/feature/uo/lua/print-libraries";
-import EnableDebugLog from "./blackmage/feature/uo/debug-log";
-import AddFunctions from "./blackmage/feature/uo/lua/add-functions";
+
 import { UOSA } from "./blackmage/UOSA";
+import { PrintFunctions, AddFunctions } from "./blackmage/feature/uo/lua";
 
 const uosa = new UOSA({
     features: [
-        //EnableDebugLog,
-        //PrintLibraries,
-        PrintFunctions,
-        AddFunctions
+        new PrintFunctions,
+        new AddFunctions
     ],
     bugfixes: []
 }).start()

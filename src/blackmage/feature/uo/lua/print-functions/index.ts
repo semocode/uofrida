@@ -1,7 +1,8 @@
 import { buildScanPattern, buildPatternPushAbs } from "../../../../util";
 import { rdata, text } from "../../../../service/exe";
+import { Feature } from "../../../../Feature";
 
-const PrintFunctions = {
+export class PrintFunctions extends Feature {
     onExecute() {
         // Search "GetBuildVersion" string in .rdata
         var s1 = Memory.scanSync(rdata.base, rdata.size, buildScanPattern("GetBuildVersion"));
@@ -39,5 +40,3 @@ const PrintFunctions = {
         })
     }
 }
-
-export default PrintFunctions
