@@ -2,41 +2,11 @@ import { rdata, text } from "../../../../service/exe"
 import { buildScanPattern, buildPatternPushAbs } from "../../../../util";
 import { Feature } from "../../../../Feature";
 
-// Keep references to allocated memory so it does not get free'd (to avoid nasty crashes of UOSA.exe)
-var names: any = {}
-var callbacks: any = {}
-var trampoline: NativePointer
-
-function luaLoadArgs(cw: X86Writer, registerLuaFunction: NativePointer, name: string, fn: any, args: any) {
-    const nameMemory = Memory.allocAnsiString(name)
-    names[name] = nameMemory
-
-    callbacks[name] = new NativeCallback(fn, 'int', args);
-    cw.putPushU32(names[name].toInt32())
-    cw.putPushU32(callbacks[name].toInt32())
-    cw.putPushReg("esi")
-    cw.putCallAddress(registerLuaFunction)
-}
-    
-
-function luaLoad(cw: X86Writer, registerLuaFunction: NativePointer, name: string, fn: any) {
-    console.log('[++]  Adding lua function \"' + name + '\"');
-    luaLoadArgs(cw, registerLuaFunction, name, fn, []);
-}
-
-function luaLoadAddr(cw: X86Writer, registerLuaFunction: NativePointer, name: string, addr: NativePointer) {
-    console.log('[++]  Adding lua function \"' + name + '\"')
-    const nameMemory = Memory.allocAnsiString(name)
-    names[name] = nameMemory
-
-    cw.putPushU32(nameMemory.toInt32())
-    cw.putPushU32(addr.toInt32())
-    cw.putPushReg("esi")
-    cw.putCallAddress(registerLuaFunction)
-    
-}
-
 export class AddFunctions extends Feature {
+    // Keep references to allocated memory so it does not get free'd (to avoid nasty crashes of UOSA.exe)
+    names: any = {}
+    callbacks: any = {}
+    trampoline: NativePointer = new NativePointer(0)
 
     onExecute() {
         const s1 = Memory.scanSync(rdata.base, rdata.size, buildScanPattern("GetBuildVersion"))
@@ -69,18 +39,18 @@ export class AddFunctions extends Feature {
         const registerLuaFunction = sa3
 
         // prepare our inserted code
-        trampoline = Memory.alloc(Process.pageSize)
-        Memory.protect(trampoline, Process.pageSize, "rwx")
+        this.trampoline = Memory.alloc(Process.pageSize)
+        Memory.protect(this.trampoline, Process.pageSize, "rwx")
 
-        console.log('[++]  Allocated memory for AddLuaFunctions injector @ ', trampoline)
-        Memory.patchCode(trampoline, 256, (code) => {
-            const cw = new X86Writer(code, { pc: trampoline })
+        console.log('[++]  Allocated memory for AddLuaFunctions injector @ ', this.trampoline)
+        Memory.patchCode(this.trampoline, 256, (code) => {
+            const cw = new X86Writer(code, { pc: this.trampoline })
 
             // Re-register overwritten UOGetBuildVersion
-            luaLoadAddr(cw, registerLuaFunction, "GetBuildVersion", getBuildVersionImpl);
+            this.luaLoadAddr(cw, registerLuaFunction, "GetBuildVersion", getBuildVersionImpl);
 
             // Load a couple of mouse and keyboard functions
-            luaLoad(cw, registerLuaFunction, "MoveMouseAbs", function () {
+            this.luaLoad(cw, registerLuaFunction, "MoveMouseAbs", function () {
                 /*
                 if (lua_state) {
                     var x = parseInt(win32.lua_tonumber(lua_state, 1));
@@ -96,11 +66,38 @@ export class AddFunctions extends Feature {
         // write actual hook into UO control flow
         Memory.patchCode(hookAddr, 32, (code) => {
             const cw = new X86Writer(code, { pc: hookAddr })
-            cw.putCallAddress(trampoline)
+            cw.putCallAddress(this.trampoline)
             cw.putNopPadding(5 + 1 + 5)
         })        
         console.log('[++]  Written hooking code @', hookAddr.toString(16));
     }
-}
 
-export default AddFunctions
+    luaLoadAddr(cw: X86Writer, registerLuaFunction: NativePointer, name: string, addr: NativePointer) {
+        console.log('[++]  Adding lua function \"' + name + '\"')
+        const nameMemory = Memory.allocAnsiString(name)
+        this.names[name] = nameMemory
+    
+        cw.putPushU32(nameMemory.toInt32())
+        cw.putPushU32(addr.toInt32())
+        cw.putPushReg("esi")
+        cw.putCallAddress(registerLuaFunction)
+        
+    }
+
+    luaLoadArgs(cw: X86Writer, registerLuaFunction: NativePointer, name: string, fn: any, args: any) {
+        const nameMemory = Memory.allocAnsiString(name)
+        this.names[name] = nameMemory
+    
+        this.callbacks[name] = new NativeCallback(fn, 'int', args);
+        cw.putPushU32(this.names[name].toInt32())
+        cw.putPushU32(this.callbacks[name].toInt32())
+        cw.putPushReg("esi")
+        cw.putCallAddress(registerLuaFunction)
+    }
+        
+    
+    luaLoad(cw: X86Writer, registerLuaFunction: NativePointer, name: string, fn: any) {
+        console.log('[++]  Adding lua function \"' + name + '\"');
+        this.luaLoadArgs(cw, registerLuaFunction, name, fn, []);
+    }
+}

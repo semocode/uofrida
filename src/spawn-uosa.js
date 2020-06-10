@@ -25,7 +25,7 @@ async function processExists(pid) {
             if (err) {
                 reject(err)
             }
-            var process = resultList[0];
+            var process = resultList[0]
             if (process) {
                 resolve(true)      
             } else {
@@ -78,4 +78,4 @@ async function main() {
 main()
   .catch(e => {
     console.error(e);
-  });
+  })
