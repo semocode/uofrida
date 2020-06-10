@@ -1,6 +1,6 @@
 # uo-blackmage
 
-**uo-blackmage** is a tool to add new features and fix bugs for the [Ultima Online Enhanced Client](https://uo.com).
+uo-blackmage is a tool to add new features and fix bugs for the [Ultima Online Enhanced Client](https://uo.com).
 
 It is based on [nodejs](https://nodejs.org/en/download/) and [frida.re](https://www.frida.re/) 
 and written in [Typescript](https://www.typescriptlang.org/).
