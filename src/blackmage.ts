@@ -6,11 +6,10 @@
  * (usually through `npm run uo`)
  */
 
-
-import { UOSA } from "./blackmage/UOSA";
+import { Client } from "./blackmage/Client";
 import { PrintFunctions, AddFunctions } from "./blackmage/feature/uo/lua";
 
-const uosa = new UOSA({
+const uosa = new Client({
     features: [
         new PrintFunctions,
         new AddFunctions
