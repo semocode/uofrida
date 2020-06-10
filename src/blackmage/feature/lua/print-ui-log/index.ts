@@ -26,22 +26,29 @@ export class PrintUiLog extends Feature {
     while (current.mnemonic != "call") {
       current = Instruction.parse(current.next);
     }
-    // Skip a mov
+    // Look for second call in lua_log_uilog
     current = Instruction.parse(current.next);
-    // Skip another mov
+    while (current.mnemonic != "call") {
+      current = Instruction.parse(current.next);
+    }
+    // Look for third call in lua_log_uilog
     current = Instruction.parse(current.next);
+    while (current.mnemonic != "call") {
+      current = Instruction.parse(current.next);
+    }
 
-    const hook = current.next;
+    const hook = current;
+    const target = ptr(current.address.add(1).readS32());
+    const LogError = current.address.add(5).add(target);
     // ESI has the formatted string in it @ hook
     //console.log("intercept @ ", hook);
 
-    Interceptor.attach(hook, {
+    Interceptor.attach(LogError, {
       onEnter: function (args) {
-        //@ts-ignore
-        const esi = this.context.esi;
-        var message = esi.readUtf16String();
+        const channel = args[0];
+        const message = args[1].readUtf16String();
         // Do not log function calls, i.e. channel 5
-        console.log("UiLog: " + message);
+        console.log("UiLog ", channel, ": ", message);
       },
     });
   }
