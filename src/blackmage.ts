@@ -7,13 +7,10 @@
  */
 
 import { Client } from "./blackmage/Client";
-import {
-  PrintFunctions,
-  AddFunctions,
-  PrintLuaErrors,
-} from "./blackmage/feature/lua";
+import { AddFunctions, PrintUiLog } from "./blackmage/feature/lua";
+import { PrintDebugLog } from "./blackmage/feature/uo";
 
 const uosa = new Client({
-  features: [new AddFunctions(), new PrintLuaErrors()],
+  features: [new AddFunctions(), new PrintDebugLog(), new PrintUiLog()],
   bugfixes: [],
 }).start();

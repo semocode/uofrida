@@ -21,8 +21,9 @@ You can also start UO by running `npm install` and `npm run uo` yourself.
 ## Main features
 
 - New lua functions for mouse and keyboard automation (and more): [new lua functions](docs/lua-functions.md)
-- Integration of UiLog (i.e. DebugWindow messages) outside of UOSA (in console window or chrome devtools)
 - Enabling [os](https://www.lua.org/pil/contents.html#22), [io](https://www.lua.org/pil/contents.html#21) and [package](https://www.lua.org/pil/contents.html#15) lua standard libraries
+- Integration of UiLog (i.e. DebugWindow messages) outside of UOSA (in console window or chrome devtools)
+- Enabling of DebugLog messages (normally only visible to UO developers)
 
 ## Making modifications / Development
 

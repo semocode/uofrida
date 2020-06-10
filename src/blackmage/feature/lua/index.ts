@@ -1,4 +1,4 @@
 export * from "./add-functions";
 export * from "./print-functions";
 export * from "./print-libraries";
-export * from "./print-lua-errors";
+export * from "./print-ui-log";

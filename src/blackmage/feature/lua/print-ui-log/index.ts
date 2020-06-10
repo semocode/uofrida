@@ -2,7 +2,7 @@ import { Feature } from "../../../Feature";
 import { rdata, text } from "../../../service/exe";
 import { buildScanPattern, buildPatternPushAbs } from "../../../util";
 
-export class PrintLuaErrors extends Feature {
+export class PrintUiLog extends Feature {
   onExecute() {
     var s1 = Memory.scanSync(
       rdata.base,
