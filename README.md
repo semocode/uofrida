@@ -12,7 +12,7 @@ and written in [Typescript](https://www.typescriptlang.org/).
 3. Start the provided `blackmage.bat`
 
 Running `blackmage.bat` will install all dependeciens if they are not found and then start Ultima Online with 
-uo-blackmage attached. If dependencies are already installed, it will start UO.
+uo-blackmage attached. If dependencies are already installed, it will just start Ultima Online with uo-blackmage attached.
 
 You can also start UO by running `npm run uo` yourself.
 
